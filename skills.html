@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Daniel Black - Pastimes & Hobbies + Tableau + mini game" />
+    <meta name="author" content="Daniel Black" />
+    <title>Daniel Black - Pastimes & Hobbies</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+
+    <!-- Page-specific styles (single page, per app instructions) -->
+    <style>
+      .sport-img {
+        width: 100%;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.10);
+        margin: 10px 0 12px 0;
+      }
+      .img-caption {
+        margin-top: -6px;
+        margin-bottom: 18px;
+        font-size: 0.95rem;
+        color: rgba(0, 0, 0, 0.6);
+      }
+
+      /* Tableau container to match site spacing */
+      .viz-shell {
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 12px;
+        padding: 12px;
+        margin-top: 14px;
+      }
+
+      /* Game card styling */
+      .game-shell {
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 12px;
+        padding: 18px;
+        margin-top: 18px;
+      }
+      .game-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .pill {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.14);
+        font-size: 0.9rem;
+        margin-right: 8px;
+        margin-bottom: 8px;
+      }
+      .choice-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      @media (min-width: 640px) {
+        .choice-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .choice-btn {
+        width: 100%;
+        text-align: left;
+        padding: 12px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.18);
+        background: #fff;
+        cursor: pointer;
+        transition: transform 0.04s ease, box-shadow 0.12s ease;
+        font-family: inherit;
+      }
+      .choice-btn:hover {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      }
+      .choice-btn:active {
+        transform: translateY(1px);
+      }
+      .choice-btn.correct {
+        border-color: rgba(25, 135, 84, 0.55);
+        background: rgba(25, 135, 84, 0.07);
+      }
+      .choice-btn.wrong {
+        border-color: rgba(220, 53, 69, 0.55);
+        background: rgba(220, 53, 69, 0.07);
+      }
+      .game-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 12px;
+      }
+      .game-controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .btn-clean {
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.18);
+        background: #fff;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .btn-clean:hover {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      }
+      .status {
+        margin-top: 10px;
+        min-height: 24px;
+      }
+      .muted {
+        color: rgba(0, 0, 0, 0.6);
+      }
+      #confettiCanvas {
+        width: 100%;
+        height: 160px;
+        display: none;
+        margin-top: 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .kbd {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        border: 1px solid rgba(0, 0, 0, 0.18);
+        border-bottom-width: 3px;
+        padding: 2px 6px;
+        border-radius: 6px;
+        background: #fff;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+      <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="index.html">Daniel Black</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarResponsive"
+          aria-controls="navbarResponsive"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          Menu <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="education.html">Education</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="experience.html">Resume</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="skills.html">Skills</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="scratch.html">BYU Survival Guide</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Header-->
+    <header class="masthead" style="background-image: url('assets/img/hobbies.jpeg')">
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="page-heading">
+              <h1>Pastimes & Hobbies</h1>
+              <span class="subheading">Golf • Ski • Boat • Basketball</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content-->
+    <main class="mb-4">
+      <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+
+            <p class="lead">
+              I’m big on staying active. These hobbies keep me balanced, competitive, and always improving.
+            </p>
+
+            <hr class="my-4" />
+
+            <!-- GOLF -->
+            <h2 class="h4">Golf</h2>
+            <img class="sport-img" src="assets/img/golf.webp" alt="Daniel golfing (or a golf photo)" />
+            <p class="img-caption">Golf is part skill, part patience — and somehow it’s always a mental game.</p>
+            <p>
+              Golf is the perfect mix of technique and discipline. Small changes in grip, stance, or tempo can completely change a shot.
+              I like it because it’s competitive, but it also teaches calm focus under pressure.
+            </p>
+            <p class="muted">
+              Quick info: “Par” is the expected strokes for a hole/course. Being “-2” means two strokes under par.
+            </p>
+
+            <!-- SKIING -->
+            <h2 class="h4 mt-4">Skiing</h2>
+            <img class="sport-img" src="assets/img/ski.jpg" alt="Daniel skiing (or a ski photo)" />
+            <p class="img-caption">Skiing is controlled speed — carving clean turns is the best feeling.</p>
+            <p>
+              Skiing is one of the most fun ways to push yourself. The basics are simple (balance and edges), but mastering turns,
+              speed control, and different terrain takes reps. I love carving and improving each season.
+            </p>
+            <p class="muted">
+              Trail difficulty: Green = easy, Blue = intermediate, Black = advanced. “Carving” uses ski edges for smooth, fast turns.
+            </p>
+
+            <!-- BOATING -->
+            <h2 class="h4 mt-4">Boating</h2>
+            <img class="sport-img" src="assets/img/boating.jpg" alt="Boating photo" />
+            <p class="img-caption">Boating = friends + sun + good energy. Also: safety first.</p>
+            <p>
+              Boating is one of my favorite ways to hang out and be outdoors. I like the whole vibe —
+              being on the water, learning how boats work, and getting better at wakeboarding/wakesurfing.
+            </p>
+            <p class="muted">
+              Safety basics: life jackets, awareness around docks/swimmers, and respecting no-wake zones.
+            </p>
+
+            <!-- BASKETBALL -->
+            <h2 class="h4 mt-4">Basketball</h2>
+            <img class="sport-img" src="assets/img/lebron.jpeg" alt="Basketball photo" />
+            <p class="img-caption">Basketball is my go-to competitive sport — fast, physical, and fun.</p>
+            <p>
+              Basketball is my favorite way to compete. I love the pace and teamwork — you have to communicate, move, and make decisions fast.
+              Whether it’s full-court or shooting around, it’s one of the best stress relievers.
+            </p>
+            <p class="muted">
+              Consistency comes from fundamentals: repeatable shooting form, spacing, and talking on defense.
+            </p>
+
+            <hr class="my-4" />
+
+            <!-- TABLEAU SECTION -->
+            <h2 class="h4">Tableau Visualization</h2>
+            <p>
+           <div class="ratio ratio-16x9">
+  <iframe
+    src="https://public.tableau.com/views/GolfDashboard/GolfDash?:showVizHome=no"
+    frameborder="0"
+    allowfullscreen
+  ></iframe>
+</div>
+
+            </p>
+
+            <div class="viz-shell">
+              <!-- ✅ Replace EVERYTHING inside this div with your Tableau embed code from Tableau Public "Share" -->
+              <!-- Example: paste the <div class='tableauPlaceholder'> ... </script> block here -->
+             
+
+            <hr class="my-4" />
+
+            <!-- GAME SECTION -->
+            <h2 class="h4">Mini Game: Hobby Challenge</h2>
+            <p>
+              This is a small web app I built.It’s a quick quiz with scoring, streak bonuses,
+              keyboard controls, and a perfect-score celebration.
+            </p>
+            <p class="muted">
+              Keyboard: <span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span> <span class="kbd">4</span>
+            </p>
+
+            <div class="game-shell" id="gameShell" aria-label="Hobby Challenge Game">
+              <div class="game-title">
+                <i class="fa-solid fa-gamepad"></i>
+                <div>
+                  <strong>Hobby Challenge</strong>
+                  <div class="muted" id="subtitle">Answer the question to earn points.</div>
+                </div>
+              </div>
+
+              <div class="game-row">
+                <div>
+                  <span class="pill"><strong>Score:</strong> <span id="score">0</span></span>
+                  <span class="pill"><strong>Streak:</strong> <span id="streak">0</span></span>
+                  <span class="pill"><strong>Question:</strong> <span id="qNum">1</span>/5</span>
+                </div>
+
+                <div class="game-controls">
+                  <button class="btn-clean" id="restartBtn" type="button"><i class="fa-solid fa-rotate-right"></i> Restart</button>
+                  <button class="btn-clean" id="hintBtn" type="button"><i class="fa-solid fa-lightbulb"></i> Hint</button>
+                </div>
+              </div>
+
+              <hr class="my-3" />
+
+              <div>
+                <h3 class="h5 mb-2" id="questionText">Loading question...</h3>
+                <div class="choice-grid" id="choices"></div>
+                <div class="status" id="status"></div>
+              </div>
+
+              <canvas id="confettiCanvas"></canvas>
+
+             
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer-->
+    <footer class="border-top">
+      <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="small text-center text-muted fst-italic">Copyright &copy; Daniel Black 2025</div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+
+    <!-- Single-page app script -->
+    <script>
+      const QUESTIONS = [
+        {
+          topic: "Golf",
+          q: "In golf, what does being “-2” mean?",
+          choices: [
+            "You took 2 extra strokes above par",
+            "You are 2 strokes under par",
+            "You hit 2 balls out of bounds",
+            "You have 2 holes left to play"
+          ],
+          answerIndex: 1,
+          hint: "Think: minus = fewer strokes than expected."
+        },
+        {
+          topic: "Skiing",
+          q: "What does it mean to “carve” on skis?",
+          choices: [
+            "Sliding sideways to slow down",
+            "Stopping by sitting down",
+            "Using ski edges to cut smooth turns in the snow",
+            "Skiing with one ski only"
+          ],
+          answerIndex: 2,
+          hint: "It’s the smooth, edge-locked turn style."
+        },
+        {
+          topic: "Boating",
+          q: "What is a common purpose of a no-wake zone?",
+          choices: [
+            "To allow boats to race faster",
+            "To reduce waves for safety near docks/swimmers",
+            "To increase engine noise for alerts",
+            "To force boats to stop completely"
+          ],
+          answerIndex: 1,
+          hint: "Waves can damage docks and knock people around."
+        },
+        {
+          topic: "Basketball",
+          q: "Which skill helps most with consistent shooting?",
+          choices: [
+            "Randomly changing your form each shot",
+            "Keeping a repeatable form and follow-through",
+            "Looking away right after release",
+            "Jumping sideways on purpose"
+          ],
+          answerIndex: 1,
+          hint: "Same form, same results."
+        },
+        {
+          topic: "All Sports",
+          q: "Which is a good performance habit across all sports?",
+          choices: [
+            "Never practicing fundamentals",
+            "Only trying hard when people watch",
+            "Tracking progress and improving little by little",
+            "Avoiding feedback at all costs"
+          ],
+          answerIndex: 2,
+          hint: "Small consistent improvements add up."
+        }
+      ];
+
+      const scoreEl = document.getElementById("score");
+      const streakEl = document.getElementById("streak");
+      const qNumEl = document.getElementById("qNum");
+      const questionTextEl = document.getElementById("questionText");
+      const choicesEl = document.getElementById("choices");
+      const statusEl = document.getElementById("status");
+      const subtitleEl = document.getElementById("subtitle");
+      const restartBtn = document.getElementById("restartBtn");
+      const hintBtn = document.getElementById("hintBtn");
+      const confettiCanvas = document.getElementById("confettiCanvas");
+
+      let qIndex = 0;
+      let score = 0;
+      let streak = 0;
+      let locked = false;
+
+      function renderQuestion() {
+        locked = false;
+        statusEl.textContent = "";
+        statusEl.className = "status";
+        choicesEl.innerHTML = "";
+
+        const q = QUESTIONS[qIndex];
+        subtitleEl.textContent = `Topic: ${q.topic}`;
+        qNumEl.textContent = String(qIndex + 1);
+        questionTextEl.textContent = q.q;
+
+        q.choices.forEach((text, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "choice-btn";
+          btn.innerHTML = `<strong>${idx + 1}.</strong> ${text}`;
+          btn.addEventListener("click", () => choose(idx, btn));
+          choicesEl.appendChild(btn);
+        });
+      }
+
+      function choose(idx, btn) {
+        if (locked) return;
+        locked = true;
+
+        const q = QUESTIONS[qIndex];
+        const all = Array.from(document.querySelectorAll(".choice-btn"));
+
+        all[q.answerIndex].classList.add("correct");
+
+        if (idx === q.answerIndex) {
+          btn.classList.add("correct");
+          streak += 1;
+          const points = 10 + Math.max(0, (streak - 1) * 2);
+          score += points;
+          statusEl.innerHTML = `<span class="muted">✅ Correct! +${points} points (streak bonus)</span>`;
+        } else {
+          btn.classList.add("wrong");
+          streak = 0;
+          statusEl.innerHTML = `<span class="muted">❌ Not quite. The correct answer is highlighted.</span>`;
+        }
+
+        scoreEl.textContent = String(score);
+        streakEl.textContent = String(streak);
+
+        setTimeout(() => {
+          qIndex += 1;
+          if (qIndex >= QUESTIONS.length) endGame();
+          else renderQuestion();
+        }, 900);
+      }
+
+      function endGame() {
+        choicesEl.innerHTML = "";
+        questionTextEl.textContent = "Game Over!";
+        subtitleEl.textContent = "Thanks for playing.";
+        qNumEl.textContent = String(QUESTIONS.length);
+
+        if (score >= 70) {
+          statusEl.innerHTML = `<strong>🏆 Perfect Score!</strong> You went 5-for-5.`;
+          launchConfetti();
+        } else {
+          statusEl.innerHTML = `Final score: <strong>${score}</strong>. Hit restart and try to go 5-for-5.`;
+          confettiCanvas.style.display = "none";
+        }
+
+        locked = true;
+      }
+
+      function restart() {
+        qIndex = 0;
+        score = 0;
+        streak = 0;
+        locked = false;
+        scoreEl.textContent = "0";
+        streakEl.textContent = "0";
+        confettiCanvas.style.display = "none";
+        renderQuestion();
+      }
+
+      function hint() {
+        const q = QUESTIONS[qIndex];
+        statusEl.innerHTML = `<span class="muted">💡 Hint: ${q.hint}</span>`;
+      }
+
+      window.addEventListener("keydown", (e) => {
+        if (locked) return;
+        const key = e.key;
+        if (key === "1" || key === "2" || key === "3" || key === "4") {
+          const idx = Number(key) - 1;
+          const btn = document.querySelectorAll(".choice-btn")[idx];
+          if (btn) btn.click();
+        }
+      });
+
+      restartBtn.addEventListener("click", restart);
+      hintBtn.addEventListener("click", hint);
+
+      function launchConfetti() {
+        confettiCanvas.style.display = "block";
+        const rect = confettiCanvas.getBoundingClientRect();
+        confettiCanvas.width = Math.floor(rect.width);
+        confettiCanvas.height = Math.floor(rect.height);
+
+        const ctx = confettiCanvas.getContext("2d");
+        const W = confettiCanvas.width;
+        const H = confettiCanvas.height;
+
+        const pieces = Array.from({ length: 140 }, () => ({
+          x: Math.random() * W,
+          y: -20 - Math.random() * H,
+          r: 3 + Math.random() * 5,
+          vx: -1.5 + Math.random() * 3,
+          vy: 2 + Math.random() * 4,
+          rot: Math.random() * Math.PI,
+          vrot: -0.15 + Math.random() * 0.3
+        }));
+
+        const start = performance.now();
+        const duration = 1500;
+
+        function frame(t) {
+          const elapsed = t - start;
+          ctx.clearRect(0, 0, W, H);
+
+          pieces.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.vrot;
+
+            if (p.x < -20) p.x = W + 20;
+            if (p.x > W + 20) p.x = -20;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+
+            const hue = (i * 17 + elapsed * 0.15) % 360;
+            ctx.fillStyle = `hsl(${hue}, 80%, 55%)`;
+            ctx.fillRect(-p.r, -p.r, p.r * 2.2, p.r * 1.4);
+            ctx.restore();
+          });
+
+          if (elapsed < duration) requestAnimationFrame(frame);
+          else setTimeout(() => (confettiCanvas.style.display = "none"), 600);
+        }
+
+        requestAnimationFrame(frame);
+      }
+
+      restart();
+    </script>
+  </body>
+</html>
